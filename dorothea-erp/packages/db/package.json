@@ -1,0 +1,21 @@
+{
+  "name": "@dorothea/db",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./schema": "./schema/index.ts",
+    "./migrations": "./migrations"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "generate": "drizzle-kit generate"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.36.0"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.27.0",
+    "typescript": "^5.6.0",
+    "@cloudflare/workers-types": "^4.20241127.0"
+  }
+}

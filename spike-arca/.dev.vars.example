@@ -1,0 +1,23 @@
+# Copiar este archivo como .dev.vars (nunca commitear .dev.vars)
+# Wrangler lo lee automáticamente en desarrollo local.
+
+# CUIT del emisor (sin guiones)
+ARCA_CUIT=20123456789
+
+# Certificado digital PEM (incluir headers BEGIN/END CERTIFICATE)
+# Cómo cargarlo: ver SETUP.md → Sección 3
+ARCA_CERT=-----BEGIN CERTIFICATE-----
+MIIDBTCCAe2gAwIBAgIUXXXXXXXXXXXXXXXXXXXXXXXXXXXwDQYJKoZIhvcNAQEL
+... (contenido del certificado) ...
+-----END CERTIFICATE-----
+
+# Clave privada RSA PEM (PKCS#1 o PKCS#8, ambos son soportados)
+# Cómo cargarla: ver SETUP.md → Sección 3
+ARCA_PRIVATE_KEY=-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEA... (contenido de la clave privada) ...
+-----END RSA PRIVATE KEY-----
+
+# Sobrescriben los valores de wrangler.toml solo si se necesita
+# ARCA_ENV=homologacion
+# ARCA_WSAA_URL=https://wsaahomo.afip.gov.ar/ws/services/LoginCms
+# ARCA_WSFE_URL=https://wswhomo.afip.gov.ar/wsfev1/service.asmx

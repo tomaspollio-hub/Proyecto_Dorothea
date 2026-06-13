@@ -1,0 +1,25 @@
+name = "dorothea-arca-spike"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+
+# node-forge requiere nodejs_compat para Buffer, crypto y módulos Node.js
+# pkijs (alternativa pura Web Crypto) NO requeriría este flag
+compatibility_flags = ["nodejs_compat"]
+
+# Variables no secretas (sobreescriben .dev.vars en producción)
+[vars]
+ARCA_ENV = "homologacion"
+ARCA_WSAA_URL = "https://wsaahomo.afip.gov.ar/ws/services/LoginCms"
+ARCA_WSFE_URL = "https://wswhomo.afip.gov.ar/wsfev1/service.asmx"
+
+# Secrets (cargar con: wrangler secret put NOMBRE)
+# ARCA_CUIT          → CUIT del emisor sin guiones (ej: 20123456789)
+# ARCA_CERT          → Certificado PEM completo (incluyendo headers)
+# ARCA_PRIVATE_KEY   → Clave privada RSA PEM completa (PKCS#1 o PKCS#8)
+
+# [[ PRODUCCIÓN ]]
+# Crear sección [env.production] con las URLs de producción
+# y hacer deploy con: wrangler deploy --env production
+
+[env.production]
+vars = { ARCA_ENV = "produccion", ARCA_WSAA_URL = "https://wsaa.afip.gov.ar/ws/services/LoginCms", ARCA_WSFE_URL = "https://servicios1.afip.gov.ar/wsfev1/service.asmx" }

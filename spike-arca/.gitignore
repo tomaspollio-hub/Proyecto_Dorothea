@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.wrangler/
+
+# CRÍTICO: nunca commitear estos archivos
+.dev.vars
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer

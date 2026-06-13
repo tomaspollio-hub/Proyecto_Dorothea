@@ -1,0 +1,39 @@
+name = "dorothea-worker"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+APP_ENV = "development"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dorothea-db"
+database_id = "REEMPLAZAR_CON_ID_REAL"  # wrangler d1 create dorothea-db
+
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "REEMPLAZAR_CON_ID_REAL"  # wrangler kv namespace create SESSIONS
+
+[[kv_namespaces]]
+binding = "CACHE"
+id = "REEMPLAZAR_CON_ID_REAL"  # wrangler kv namespace create CACHE
+
+[[kv_namespaces]]
+binding = "ARCA_CONFIG"
+id = "REEMPLAZAR_CON_ID_REAL"  # wrangler kv namespace create ARCA_CONFIG
+
+[[r2_buckets]]
+binding = "STORAGE"
+bucket_name = "dorothea-storage"  # wrangler r2 bucket create dorothea-storage
+
+# Secrets (configurar con `wrangler secret put JWT_SECRET`):
+# JWT_SECRET
+
+[env.staging]
+name = "dorothea-worker-staging"
+vars = { APP_ENV = "staging" }
+
+[env.production]
+name = "dorothea-worker-production"
+vars = { APP_ENV = "production" }

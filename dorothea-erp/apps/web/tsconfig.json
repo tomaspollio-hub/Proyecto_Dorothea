@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "paths": {
+      "@dorothea/shared/types": ["../../packages/shared/types/index.ts"],
+      "@dorothea/shared/constants": ["../../packages/shared/constants/index.ts"],
+      "@dorothea/validators/auth": ["../../packages/validators/auth.ts"]
+    }
+  },
+  "include": ["src/**/*"]
+}

@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth.ts'
+import { ChangePasswordModal } from '../../../modules/users/components/ChangePasswordModal.tsx'
 
 const navItems = [
   { to: '/ventas', label: 'Ventas' },
@@ -12,6 +14,7 @@ const navItems = [
 export function AppLayout() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
+  const [changingPassword, setChangingPassword] = useState(false)
 
   async function handleLogout() {
     await logout()
@@ -47,8 +50,14 @@ export function AppLayout() {
           <p className="text-xs font-medium text-gray-700 truncate">{user?.name}</p>
           <p className="text-xs text-gray-400 truncate">{user?.email}</p>
           <button
+            onClick={() => setChangingPassword(true)}
+            className="mt-2 text-xs text-gray-500 hover:text-brand-600 transition-colors block"
+          >
+            Cambiar contraseña
+          </button>
+          <button
             onClick={handleLogout}
-            className="mt-2 text-xs text-gray-500 hover:text-red-600 transition-colors"
+            className="mt-1 text-xs text-gray-500 hover:text-red-600 transition-colors block"
           >
             Cerrar sesión
           </button>
@@ -58,6 +67,8 @@ export function AppLayout() {
       <main className="flex-1 overflow-auto">
         <Outlet />
       </main>
+
+      {changingPassword && <ChangePasswordModal onClose={() => setChangingPassword(false)} />}
     </div>
   )
 }

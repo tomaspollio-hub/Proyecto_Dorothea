@@ -95,6 +95,30 @@ export async function createInitialAdmin(
   password: string,
   name: string,
 ): Promise<void> {
+  const [existing] = await db.select({ id: users.id }).from(users).limit(1)
+  if (existing) {
+    throw new UnauthorizedError('Ya existen usuarios; el seed inicial solo se permite en una base vacía')
+  }
+
   const passwordHash = await hashPassword(password)
   await db.insert(users).values({ email, passwordHash, name, role: 'admin' })
+}
+
+export async function changePassword(
+  db: DbClient,
+  userId: number,
+  currentPassword: string,
+  newPassword: string,
+): Promise<void> {
+  const [user] = await db.select().from(users).where(eq(users.id, userId)).limit(1)
+  if (!user) throw new UnauthorizedError('Usuario no encontrado')
+
+  const valid = await verifyPassword(currentPassword, user.passwordHash)
+  if (!valid) throw new UnauthorizedError('Contraseña actual incorrecta')
+
+  const passwordHash = await hashPassword(newPassword)
+  await db.update(users).set({ passwordHash }).where(eq(users.id, userId))
+
+  // Invalida todas las sesiones existentes (refresh tokens) para forzar reautenticación
+  await db.delete(sessions).where(eq(sessions.userId, userId))
 }

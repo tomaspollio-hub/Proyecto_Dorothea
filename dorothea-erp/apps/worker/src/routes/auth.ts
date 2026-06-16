@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
-import { loginSchema, refreshSchema } from '@dorothea/validators/auth'
-import { loginUser, refreshUserToken, logoutUser, createInitialAdmin } from '../services/auth.service.ts'
+import { loginSchema, refreshSchema, changePasswordSchema } from '@dorothea/validators/auth'
+import { loginUser, refreshUserToken, logoutUser, createInitialAdmin, changePassword } from '../services/auth.service.ts'
 import { requireAuth } from '../middleware/auth.ts'
 import { getDb } from '../db/connection.ts'
 import type { Env } from '../env.ts'
@@ -44,6 +44,15 @@ auth.get('/me', requireAuth(), (c) => {
     name: user.name,
     role: user.role,
   })
+})
+
+auth.patch('/password', requireAuth(), zValidator('json', changePasswordSchema), async (c) => {
+  const { currentPassword, newPassword } = c.req.valid('json')
+  const user = c.get('user')
+  const db = getDb(c.env)
+
+  await changePassword(db, Number(user.sub), currentPassword, newPassword)
+  return c.json({ ok: true })
 })
 
 // Solo disponible en development para crear el admin inicial

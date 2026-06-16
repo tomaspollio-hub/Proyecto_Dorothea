@@ -4,7 +4,10 @@ compatibility_date = "2024-11-01"
 compatibility_flags = ["nodejs_compat"]
 
 [vars]
-APP_ENV = "development"
+# El worker desplegado (este es el único ambiente real desplegado hasta ahora)
+# corre como "production". Para desarrollo local, `wrangler dev` sobreescribe
+# este valor con APP_ENV=development definido en .dev.vars (gitignored).
+APP_ENV = "production"
 
 [[d1_databases]]
 binding = "DB"

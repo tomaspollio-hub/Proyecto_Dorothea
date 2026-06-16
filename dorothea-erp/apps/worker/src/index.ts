@@ -6,6 +6,7 @@ import { categoryRoutes } from './routes/categories.ts'
 import { productRoutes } from './routes/products.ts'
 import { inventoryRoutes } from './routes/inventory.ts'
 import { customerRoutes } from './routes/customers.ts'
+import { cashRegisterRoutes } from './routes/cash-register.ts'
 import { AppError } from './utils/errors.ts'
 import type { Env } from './env.ts'
 
@@ -27,6 +28,7 @@ app.route('/api/v1/categories', categoryRoutes)
 app.route('/api/v1/products', productRoutes)
 app.route('/api/v1/inventory', inventoryRoutes)
 app.route('/api/v1/customers', customerRoutes)
+app.route('/api/v1/cash-register', cashRegisterRoutes)
 
 app.onError((err, c) => {
   if (err instanceof AppError) {

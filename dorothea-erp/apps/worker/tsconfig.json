@@ -12,7 +12,8 @@
       "@dorothea/validators/product": ["../../packages/validators/product.ts"],
       "@dorothea/validators/inventory": ["../../packages/validators/inventory.ts"],
       "@dorothea/validators/customer": ["../../packages/validators/customer.ts"],
-      "@dorothea/validators/cash-register": ["../../packages/validators/cash-register.ts"]
+      "@dorothea/validators/cash-register": ["../../packages/validators/cash-register.ts"],
+      "@dorothea/validators/sale": ["../../packages/validators/sale.ts"]
     }
   },
   "include": ["src/**/*"]

@@ -9,7 +9,8 @@
     "migrate:local": "wrangler d1 migrations apply dorothea-db --local",
     "migrate:remote": "wrangler d1 migrations apply dorothea-db --remote",
     "seed:local": "tsx scripts/seed.ts --local",
-    "import:legacy": "tsx scripts/import-legacy.ts"
+    "import:legacy": "tsx scripts/import-legacy.ts",
+    "import:customers-legacy": "tsx scripts/import-customers-legacy.ts"
   },
   "devDependencies": {
     "typescript": "^5.6.0",

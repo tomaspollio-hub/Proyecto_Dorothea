@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { LoginPage } from '../modules/users/pages/LoginPage.tsx'
 import { ProductsPage } from '../modules/products/pages/ProductsPage.tsx'
+import { CustomersPage } from '../modules/customers/pages/CustomersPage.tsx'
 import { AppLayout } from '../shared/components/layout/AppLayout.tsx'
 import { ProtectedRoute } from './ProtectedRoute.tsx'
 
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
           {
             path: '/productos',
             element: <ProductsPage />,
+          },
+          {
+            path: '/clientes',
+            element: <CustomersPage />,
           },
           // Las rutas de cada módulo se agregan aquí en las próximas fases
         ],

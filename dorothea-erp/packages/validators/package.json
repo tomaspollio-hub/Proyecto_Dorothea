@@ -6,7 +6,8 @@
     "./auth": "./auth.ts",
     "./category": "./category.ts",
     "./product": "./product.ts",
-    "./inventory": "./inventory.ts"
+    "./inventory": "./inventory.ts",
+    "./customer": "./customer.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit"

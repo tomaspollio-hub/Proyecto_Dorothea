@@ -10,7 +10,8 @@
       "@dorothea/validators/auth": ["../../packages/validators/auth.ts"],
       "@dorothea/validators/category": ["../../packages/validators/category.ts"],
       "@dorothea/validators/product": ["../../packages/validators/product.ts"],
-      "@dorothea/validators/inventory": ["../../packages/validators/inventory.ts"]
+      "@dorothea/validators/inventory": ["../../packages/validators/inventory.ts"],
+      "@dorothea/validators/customer": ["../../packages/validators/customer.ts"]
     }
   },
   "include": ["src/**/*"]

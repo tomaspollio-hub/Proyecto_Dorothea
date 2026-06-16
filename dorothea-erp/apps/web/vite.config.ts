@@ -12,6 +12,7 @@ export default defineConfig({
       '@dorothea/validators/category': path.resolve(__dirname, '../../packages/validators/category.ts'),
       '@dorothea/validators/product': path.resolve(__dirname, '../../packages/validators/product.ts'),
       '@dorothea/validators/inventory': path.resolve(__dirname, '../../packages/validators/inventory.ts'),
+      '@dorothea/validators/customer': path.resolve(__dirname, '../../packages/validators/customer.ts'),
     },
   },
   server: {

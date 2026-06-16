@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "lib": ["ES2022"],
-    "types": ["@cloudflare/workers-types"],
+    "types": ["@cloudflare/workers-types", "@cloudflare/vitest-pool-workers"],
     "paths": {
       "@dorothea/db/schema": ["../../packages/db/schema/index.ts"],
       "@dorothea/shared/types": ["../../packages/shared/types/index.ts"],
@@ -16,5 +16,5 @@
       "@dorothea/validators/sale": ["../../packages/validators/sale.ts"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "test/**/*", "vitest.config.ts"]
 }

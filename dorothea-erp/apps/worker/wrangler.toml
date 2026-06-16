@@ -9,23 +9,24 @@ APP_ENV = "development"
 [[d1_databases]]
 binding = "DB"
 database_name = "dorothea-db"
-database_id = "REEMPLAZAR_CON_ID_REAL"  # wrangler d1 create dorothea-db
+database_id = "7ff88668-6088-4f65-963c-7dc76ae2d7a2"
+migrations_dir = "../../packages/db/migrations"
 
 [[kv_namespaces]]
 binding = "SESSIONS"
-id = "REEMPLAZAR_CON_ID_REAL"  # wrangler kv namespace create SESSIONS
+id = "9f5aae7a0a3841d68b24e56c2f73d38d"
 
 [[kv_namespaces]]
 binding = "CACHE"
-id = "REEMPLAZAR_CON_ID_REAL"  # wrangler kv namespace create CACHE
+id = "52b8fa53df334e449756d08fb2a3a250"
 
 [[kv_namespaces]]
 binding = "ARCA_CONFIG"
-id = "REEMPLAZAR_CON_ID_REAL"  # wrangler kv namespace create ARCA_CONFIG
+id = "e09f63136ae3442a9d6eb52b6bf578e9"
 
 [[r2_buckets]]
 binding = "STORAGE"
-bucket_name = "dorothea-storage"  # wrangler r2 bucket create dorothea-storage
+bucket_name = "dorothea-storage"
 
 # Secrets (configurar con `wrangler secret put JWT_SECRET`):
 # JWT_SECRET

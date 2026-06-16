@@ -31,6 +31,24 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   return data
 }
 
+async function upload<T>(path: string, formData: FormData): Promise<T> {
+  const token = localStorage.getItem('auth_token')
+
+  const res = await fetch(`${API_BASE}${path}`, {
+    method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: formData,
+  })
+
+  const data = await res.json() as T & { error?: string; code?: string }
+
+  if (!res.ok) {
+    throw new ApiError(res.status, data.code ?? 'UNKNOWN', data.error ?? 'Error desconocido')
+  }
+
+  return data
+}
+
 export const api = {
   get: <T>(path: string) => request<T>(path),
   post: <T>(path: string, body: unknown) =>
@@ -40,4 +58,5 @@ export const api = {
   patch: <T>(path: string, body: unknown) =>
     request<T>(path, { method: 'PATCH', body: JSON.stringify(body) }),
   delete: <T>(path: string) => request<T>(path, { method: 'DELETE' }),
+  upload,
 }

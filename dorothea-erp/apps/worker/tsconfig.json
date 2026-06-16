@@ -7,7 +7,10 @@
       "@dorothea/db/schema": ["../../packages/db/schema/index.ts"],
       "@dorothea/shared/types": ["../../packages/shared/types/index.ts"],
       "@dorothea/shared/constants": ["../../packages/shared/constants/index.ts"],
-      "@dorothea/validators/auth": ["../../packages/validators/auth.ts"]
+      "@dorothea/validators/auth": ["../../packages/validators/auth.ts"],
+      "@dorothea/validators/category": ["../../packages/validators/category.ts"],
+      "@dorothea/validators/product": ["../../packages/validators/product.ts"],
+      "@dorothea/validators/inventory": ["../../packages/validators/inventory.ts"]
     }
   },
   "include": ["src/**/*"]

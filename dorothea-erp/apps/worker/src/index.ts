@@ -2,6 +2,9 @@ import { Hono } from 'hono'
 import { logger } from 'hono/logger'
 import { corsMiddleware } from './middleware/cors.ts'
 import { authRoutes } from './routes/auth.ts'
+import { categoryRoutes } from './routes/categories.ts'
+import { productRoutes } from './routes/products.ts'
+import { inventoryRoutes } from './routes/inventory.ts'
 import { AppError } from './utils/errors.ts'
 import type { Env } from './env.ts'
 
@@ -19,10 +22,13 @@ app.get('/', (c) =>
 )
 
 app.route('/api/v1/auth', authRoutes)
+app.route('/api/v1/categories', categoryRoutes)
+app.route('/api/v1/products', productRoutes)
+app.route('/api/v1/inventory', inventoryRoutes)
 
 app.onError((err, c) => {
   if (err instanceof AppError) {
-    return c.json({ error: err.message, code: err.code }, err.statusCode as 400 | 401 | 403 | 404 | 422 | 500)
+    return c.json({ error: err.message, code: err.code }, err.statusCode as 400 | 401 | 403 | 404 | 409 | 422 | 500)
   }
   console.error('Unhandled error:', err)
   return c.json({ error: 'Error interno del servidor', code: 'INTERNAL_ERROR' }, 500)

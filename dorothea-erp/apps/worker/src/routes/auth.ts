@@ -28,7 +28,7 @@ auth.post('/refresh', zValidator('json', refreshSchema), async (c) => {
 })
 
 auth.post('/logout', requireAuth(), async (c) => {
-  const body = await c.req.json<{ refreshToken?: string }>().catch(() => ({}))
+  const body = await c.req.json<{ refreshToken?: string }>().catch(() => ({ refreshToken: undefined }))
   if (body.refreshToken) {
     const db = getDb(c.env)
     await logoutUser(db, body.refreshToken)

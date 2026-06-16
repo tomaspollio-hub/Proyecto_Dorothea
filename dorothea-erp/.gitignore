@@ -13,3 +13,6 @@ apps/worker/dist/
 # OS
 .DS_Store
 Thumbs.db
+
+# Import legacy
+scripts/output/*.sql

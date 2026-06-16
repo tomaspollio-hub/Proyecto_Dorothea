@@ -3,7 +3,10 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./auth": "./auth.ts"
+    "./auth": "./auth.ts",
+    "./category": "./category.ts",
+    "./product": "./product.ts",
+    "./inventory": "./inventory.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit"

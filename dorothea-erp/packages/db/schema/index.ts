@@ -1,2 +1,6 @@
 export * from './users.ts'
 export * from './sessions.ts'
+export * from './categories.ts'
+export * from './iva-rates.ts'
+export * from './products.ts'
+export * from './inventory.ts'

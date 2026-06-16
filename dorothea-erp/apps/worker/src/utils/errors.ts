@@ -31,3 +31,9 @@ export class ValidationError extends AppError {
     super(422, 'VALIDATION_ERROR', message)
   }
 }
+
+export class ConflictError extends AppError {
+  constructor(message: string) {
+    super(409, 'CONFLICT', message)
+  }
+}

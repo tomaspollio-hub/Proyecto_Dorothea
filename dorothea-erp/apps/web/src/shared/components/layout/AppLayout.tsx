@@ -11,6 +11,11 @@ const navItems = [
   { to: '/facturación', label: 'Facturación' },
 ]
 
+const adminNavItems = [
+  { to: '/usuarios', label: 'Usuarios' },
+  { to: '/configuracion', label: 'Configuración' },
+]
+
 export function AppLayout() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
@@ -44,6 +49,25 @@ export function AppLayout() {
               {item.label}
             </NavLink>
           ))}
+
+          {user?.role === 'admin' && (
+            <>
+              <div className="my-2 border-t border-gray-100" />
+              {adminNavItems.map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  className={({ isActive }) =>
+                    `block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      isActive ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-100'
+                    }`
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              ))}
+            </>
+          )}
         </nav>
 
         <div className="px-4 py-4 border-t border-gray-100">

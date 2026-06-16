@@ -9,7 +9,9 @@
     "./inventory": "./inventory.ts",
     "./customer": "./customer.ts",
     "./cash-register": "./cash-register.ts",
-    "./sale": "./sale.ts"
+    "./sale": "./sale.ts",
+    "./integrations": "./integrations.ts",
+    "./user": "./user.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

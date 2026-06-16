@@ -3,6 +3,7 @@
   "compilerOptions": {
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
+    "types": ["@testing-library/jest-dom"],
     "paths": {
       "@dorothea/shared/types": ["../../packages/shared/types/index.ts"],
       "@dorothea/shared/constants": ["../../packages/shared/constants/index.ts"],
@@ -12,8 +13,10 @@
       "@dorothea/validators/inventory": ["../../packages/validators/inventory.ts"],
       "@dorothea/validators/customer": ["../../packages/validators/customer.ts"],
       "@dorothea/validators/cash-register": ["../../packages/validators/cash-register.ts"],
-      "@dorothea/validators/sale": ["../../packages/validators/sale.ts"]
+      "@dorothea/validators/sale": ["../../packages/validators/sale.ts"],
+      "@dorothea/validators/integrations": ["../../packages/validators/integrations.ts"],
+      "@dorothea/validators/user": ["../../packages/validators/user.ts"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "test/**/*", "vitest.config.ts"]
 }

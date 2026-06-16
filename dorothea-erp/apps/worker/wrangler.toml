@@ -34,6 +34,20 @@ bucket_name = "dorothea-storage"
 # Secrets (configurar con `wrangler secret put JWT_SECRET`):
 # JWT_SECRET
 
+# NOTA (2026-06-16): los bloques [env.staging] y [env.production] de abajo son
+# placeholders de Fase 0, NUNCA desplegados y NO funcionales tal como están:
+# a un entorno con [env.X] hay que declararle sus propios bindings de D1/KV/R2
+# (Wrangler no los hereda automáticamente del bloque top-level). El ambiente
+# real desplegado hoy es el worker default de arriba ("dorothea-worker"), con
+# APP_ENV=production seteado directamente.
+#
+# Decisión: no se provisionó un ambiente de staging real con recursos propios
+# todavía. Para un solo desarrollador, antes de tener usuarios reales, el
+# costo de mantener D1/KV/R2 duplicados no se justifica frente a la cobertura
+# que ya dan los tests de integración (D1 real vía Miniflare en CI). Si se
+# necesita staging real más adelante (ej. antes de la integración ARCA en
+# producción con plata real), provisionar recursos nuevos y completar estos
+# bloques con sus propios [[d1_databases]]/[[kv_namespaces]]/[[r2_buckets]].
 [env.staging]
 name = "dorothea-worker-staging"
 vars = { APP_ENV = "staging" }

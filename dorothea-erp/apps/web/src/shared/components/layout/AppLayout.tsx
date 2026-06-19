@@ -6,6 +6,7 @@ import { ChangePasswordModal } from '../../../modules/users/components/ChangePas
 const navItems = [
   { to: '/', label: 'Dashboard' },
   { to: '/ventas', label: 'Ventas' },
+  { to: '/reportes', label: 'Reportes' },
   { to: '/productos', label: 'Productos' },
   { to: '/clientes', label: 'Clientes' },
   { to: '/caja', label: 'Caja' },

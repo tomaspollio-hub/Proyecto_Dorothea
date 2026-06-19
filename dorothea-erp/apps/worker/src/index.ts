@@ -11,6 +11,7 @@ import { saleRoutes } from './routes/sales.ts'
 import { integrationRoutes } from './routes/integrations.ts'
 import { userRoutes } from './routes/users.ts'
 import { dashboardRoutes } from './routes/dashboard.ts'
+import { reportRoutes } from './routes/reports.ts'
 import { AppError } from './utils/errors.ts'
 import type { Env } from './env.ts'
 
@@ -37,6 +38,7 @@ app.route('/api/v1/cash-register', cashRegisterRoutes)
 app.route('/api/v1/sales', saleRoutes)
 app.route('/api/v1/integrations', integrationRoutes)
 app.route('/api/v1/users', userRoutes)
+app.route('/api/v1/reports', reportRoutes)
 
 app.onError((err, c) => {
   if (err instanceof AppError) {

@@ -10,6 +10,7 @@ import { cashRegisterRoutes } from './routes/cash-register.ts'
 import { saleRoutes } from './routes/sales.ts'
 import { integrationRoutes } from './routes/integrations.ts'
 import { userRoutes } from './routes/users.ts'
+import { dashboardRoutes } from './routes/dashboard.ts'
 import { AppError } from './utils/errors.ts'
 import type { Env } from './env.ts'
 
@@ -26,6 +27,7 @@ app.get('/', (c) =>
   }),
 )
 
+app.route('/api/v1/dashboard', dashboardRoutes)
 app.route('/api/v1/auth', authRoutes)
 app.route('/api/v1/categories', categoryRoutes)
 app.route('/api/v1/products', productRoutes)

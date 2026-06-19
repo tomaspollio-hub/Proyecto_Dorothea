@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { LoginPage } from '../modules/users/pages/LoginPage.tsx'
+import { DashboardPage } from '../modules/dashboard/pages/DashboardPage.tsx'
 import { ProductsPage } from '../modules/products/pages/ProductsPage.tsx'
 import { CustomersPage } from '../modules/customers/pages/CustomersPage.tsx'
 import { CajaPage } from '../modules/cash-register/pages/CajaPage.tsx'
@@ -22,7 +23,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: '/',
-            element: <div className="p-8"><h1 className="text-2xl font-bold text-gray-900">Dashboard</h1><p className="text-gray-500 mt-2">Bienvenido a Dorothea ERP.</p></div>,
+            element: <DashboardPage />,
           },
           {
             path: '/productos',

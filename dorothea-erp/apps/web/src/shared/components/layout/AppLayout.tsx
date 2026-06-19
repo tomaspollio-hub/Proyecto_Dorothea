@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth.ts'
 import { ChangePasswordModal } from '../../../modules/users/components/ChangePasswordModal.tsx'
 
 const navItems = [
+  { to: '/', label: 'Dashboard' },
   { to: '/ventas', label: 'Ventas' },
   { to: '/productos', label: 'Productos' },
   { to: '/clientes', label: 'Clientes' },
@@ -38,6 +39,7 @@ export function AppLayout() {
             <NavLink
               key={item.to}
               to={item.to}
+              end={item.to === '/'}
               className={({ isActive }) =>
                 `block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isActive

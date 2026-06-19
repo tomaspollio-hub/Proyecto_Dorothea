@@ -193,7 +193,8 @@ export function VentasPage() {
             onKeyDown={(e) => {
               if (e.key === 'Enter' && productsRes?.data && productsRes.data.length > 0) {
                 e.preventDefault()
-                addToCart(productsRes.data[0])
+                const first = productsRes.data[0]
+                if (first) addToCart(first)
                 setSearch('')
                 searchInputRef.current?.focus()
               }

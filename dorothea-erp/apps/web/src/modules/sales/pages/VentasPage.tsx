@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { createSaleSchema } from '@dorothea/validators/sale'
 import { useProducts } from '../../products/hooks/useProducts.ts'
@@ -41,6 +41,37 @@ export function VentasPage() {
   const createSale = useCreateSale()
   const { data: historyRes } = useSalesHistory(1)
   const cancelSale = useCancelSale()
+
+  // Ref para el input de búsqueda (auto-focus y atajos)
+  const searchInputRef = useRef<HTMLInputElement>(null)
+
+  // Auto-focus al montar y al cerrar el receipt
+  useEffect(() => {
+    if (!receipt) {
+      searchInputRef.current?.focus()
+    }
+  }, [receipt])
+
+  // Listener global para F2 y Escape
+  useEffect(() => {
+    function handleKey(e: KeyboardEvent) {
+      // F2 → confirmar venta
+      if (e.key === 'F2') {
+        e.preventDefault()
+        if (cart.length > 0 && !createSale.isPending && receipt === null) {
+          handleConfirm()
+        }
+        return
+      }
+      // Escape → limpiar búsqueda (solo si no hay modal abierto)
+      if (e.key === 'Escape' && receipt === null && search) {
+        setSearch('')
+        searchInputRef.current?.focus()
+      }
+    }
+    document.addEventListener('keydown', handleKey)
+    return () => document.removeEventListener('keydown', handleKey)
+  }, [cart, createSale.isPending, receipt, search, handleConfirm, setSearch])
 
   const subtotalCents = cart.reduce((acc, item) => acc + item.unitPriceCents * item.quantity - item.discountCents, 0)
   const discountCents = Math.max(0, arsToCents(Number(discountArs) || 0))
@@ -148,9 +179,18 @@ export function VentasPage() {
       <div className="grid grid-cols-2 gap-6">
         <div>
           <Input
+            ref={searchInputRef}
             placeholder="Buscar producto por código o nombre"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && productsRes?.data && productsRes.data.length > 0) {
+                e.preventDefault()
+                addToCart(productsRes.data[0])
+                setSearch('')
+                searchInputRef.current?.focus()
+              }
+            }}
           />
 
           <div className="bg-white rounded-xl border border-gray-200 mt-3 divide-y divide-gray-100 max-h-80 overflow-y-auto">
@@ -297,6 +337,10 @@ export function VentasPage() {
             <Button onClick={handleConfirm} isLoading={createSale.isPending} disabled={cart.length === 0}>
               Confirmar venta
             </Button>
+
+            <p className="text-xs text-gray-400 text-center">
+              Enter: agregar al carrito · F2: confirmar venta · Esc: limpiar búsqueda
+            </p>
           </div>
         </div>
       </div>

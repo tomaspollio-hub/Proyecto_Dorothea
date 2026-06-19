@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
-import { createSaleSchema, saleSearchSchema } from '@dorothea/validators/sale'
-import { createSale, getSaleById, listSales, cancelSale } from '../services/sale.service.ts'
+import { createSaleSchema, saleSearchSchema, returnSaleItemsSchema } from '@dorothea/validators/sale'
+import { createSale, getSaleById, listSales, cancelSale, returnSaleItems } from '../services/sale.service.ts'
 import { requireAuth } from '../middleware/auth.ts'
 import { getDb } from '../db/connection.ts'
 import type { Env } from '../env.ts'
@@ -40,6 +40,15 @@ sales.post('/:id/cancel', async (c) => {
   const user = c.get('user')
   const db = getDb(c.env)
   const data = await cancelSale(db, id, Number(user.sub))
+  return c.json({ data })
+})
+
+sales.post('/:id/return', zValidator('json', returnSaleItemsSchema), async (c) => {
+  const id = c.req.param('id')
+  const input = c.req.valid('json')
+  const user = c.get('user')
+  const db = getDb(c.env)
+  const data = await returnSaleItems(db, id, input, Number(user.sub))
   return c.json({ data })
 })
 

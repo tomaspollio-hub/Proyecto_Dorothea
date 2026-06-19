@@ -8,10 +8,11 @@ import { useCreateSale, useSalesHistory, useCancelSale } from '../hooks/useSales
 import { Button } from '../../../shared/components/ui/Button.tsx'
 import { Input } from '../../../shared/components/ui/Input.tsx'
 import { ReceiptModal } from '../components/ReceiptModal.tsx'
+import { ReturnModal } from '../components/ReturnModal.tsx'
 import { centsToArs, arsToCents } from '../../../shared/utils/money.ts'
 import { ApiError } from '../../../shared/utils/api-client.ts'
-import type { CartItem } from '../types.ts'
-import type { SaleDetail } from '../types.ts'
+import { salesApi } from '../api/sales.api.ts'
+import type { CartItem, SaleDetail } from '../types.ts'
 
 const paymentMethodLabels: Record<string, string> = {
   CASH: 'Efectivo',
@@ -37,6 +38,7 @@ export function VentasPage() {
   const [error, setError] = useState<string | null>(null)
   const [receipt, setReceipt] = useState<SaleDetail | null>(null)
   const [receiptCustomerName, setReceiptCustomerName] = useState<string | undefined>()
+  const [returningSale, setReturningSale] = useState<SaleDetail | null>(null)
 
   const createSale = useCreateSale()
   const { data: historyRes } = useSalesHistory(1)
@@ -156,6 +158,11 @@ export function VentasPage() {
   async function handleCancel(saleId: string) {
     if (!confirm('¿Cancelar esta venta? Se repondrá el stock y se revertirá el ingreso de caja.')) return
     await cancelSale.mutateAsync(saleId);
+  }
+
+  async function handleReturn(saleId: string) {
+    const result = await salesApi.get(saleId)
+    setReturningSale(result.data)
   }
 
   if (loadingSession) return <div className="p-8 text-gray-400">Cargando...</div>
@@ -372,12 +379,20 @@ export function VentasPage() {
                     </td>
                     <td className="px-4 py-3 text-right">
                       {sale.status !== 'CANCELLED' && (
-                        <button
-                          onClick={() => handleCancel(sale.id)}
-                          className="text-red-500 hover:underline text-xs"
-                        >
-                          Cancelar
-                        </button>
+                        <span className="flex gap-3 justify-end">
+                          <button
+                            onClick={() => handleReturn(sale.id)}
+                            className="text-brand-600 hover:underline text-xs"
+                          >
+                            Devolver
+                          </button>
+                          <button
+                            onClick={() => handleCancel(sale.id)}
+                            className="text-red-500 hover:underline text-xs"
+                          >
+                            Cancelar
+                          </button>
+                        </span>
                       )}
                     </td>
                   </tr>
@@ -394,6 +409,10 @@ export function VentasPage() {
           customerName={receiptCustomerName}
           onClose={() => { setReceipt(null); setReceiptCustomerName(undefined) }}
         />
+      )}
+
+      {returningSale && (
+        <ReturnModal sale={returningSale} onClose={() => setReturningSale(null)} />
       )}
     </div>
   )

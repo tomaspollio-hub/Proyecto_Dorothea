@@ -7,6 +7,7 @@ import { CajaPage } from '../modules/cash-register/pages/CajaPage.tsx'
 import { VentasPage } from '../modules/sales/pages/VentasPage.tsx'
 import { SettingsPage } from '../modules/settings/pages/SettingsPage.tsx'
 import { UsersPage } from '../modules/users/pages/UsersPage.tsx'
+import { ReportesPage } from '../modules/reports/pages/ReportesPage.tsx'
 import { AppLayout } from '../shared/components/layout/AppLayout.tsx'
 import { ProtectedRoute } from './ProtectedRoute.tsx'
 
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
           {
             path: '/ventas',
             element: <VentasPage />,
+          },
+          {
+            path: '/reportes',
+            element: <ReportesPage />,
           },
           {
             path: '/configuracion',

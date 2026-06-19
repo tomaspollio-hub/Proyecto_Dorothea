@@ -36,6 +36,7 @@ export function VentasPage() {
   const [amountPaidArs, setAmountPaidArs] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [receipt, setReceipt] = useState<SaleDetail | null>(null)
+  const [receiptCustomerName, setReceiptCustomerName] = useState<string | undefined>()
 
   const createSale = useCreateSale()
   const { data: historyRes } = useSalesHistory(1)
@@ -111,6 +112,8 @@ export function VentasPage() {
         amountPaidCents,
       })
       const result = await createSale.mutateAsync(input)
+      const selectedCustomer = customersRes?.data.find((c) => c.id === customerId)
+      setReceiptCustomerName(selectedCustomer?.name)
       setReceipt(result.data)
       resetForm()
     } catch (err) {
@@ -341,7 +344,13 @@ export function VentasPage() {
         </div>
       )}
 
-      {receipt && <ReceiptModal sale={receipt} onClose={() => setReceipt(null)} />}
+      {receipt && (
+        <ReceiptModal
+          sale={receipt}
+          customerName={receiptCustomerName}
+          onClose={() => { setReceipt(null); setReceiptCustomerName(undefined) }}
+        />
+      )}
     </div>
   )
 }

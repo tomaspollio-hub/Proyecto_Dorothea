@@ -1,6 +1,6 @@
 import { api } from '../../../shared/utils/api-client.ts'
 import type { CreateSaleInput } from '@dorothea/validators/sale'
-import type { SaleDetail, SaleListResponse } from '../types.ts'
+import type { SaleDetail, SaleListResponse, ReturnSaleItemsInput, ReturnSaleResult } from '../types.ts'
 
 export const salesApi = {
   list: (page: number, pageSize = 20) =>
@@ -11,4 +11,7 @@ export const salesApi = {
   create: (input: CreateSaleInput) => api.post<{ data: SaleDetail }>('/sales', input),
 
   cancel: (id: string) => api.post<{ data: unknown }>(`/sales/${id}/cancel`, {}),
+
+  returnItems: (saleId: string, input: ReturnSaleItemsInput) =>
+    api.post<{ data: ReturnSaleResult }>(`/sales/${saleId}/return`, input),
 }

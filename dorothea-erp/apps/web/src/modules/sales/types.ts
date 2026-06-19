@@ -49,3 +49,12 @@ export interface CartItem {
   discountCents: number
   availableStock: number
 }
+
+export interface ReturnSaleItemsInput {
+  items: Array<{ saleItemId: string; quantity: number }>
+}
+
+export interface ReturnSaleResult {
+  refundedItems: Array<{ saleItemId: string; quantity: number; refundCents: number }>
+  totalRefundCents: number
+}

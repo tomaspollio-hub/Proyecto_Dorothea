@@ -23,6 +23,14 @@ export const saleSearchSchema = z.object({
   pageSize: z.coerce.number().int().positive().max(100).default(20),
 })
 
+export const returnSaleItemsSchema = z.object({
+  items: z.array(z.object({
+    saleItemId: z.string().min(1),
+    quantity: z.number().int().min(1),
+  })).min(1, 'Seleccioná al menos un ítem para devolver'),
+})
+
 export type SaleItemInput = z.infer<typeof saleItemInputSchema>
 export type CreateSaleInput = z.infer<typeof createSaleSchema>
 export type SaleSearchInput = z.infer<typeof saleSearchSchema>
+export type ReturnSaleItemsInput = z.infer<typeof returnSaleItemsSchema>

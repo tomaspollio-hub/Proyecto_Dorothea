@@ -12,7 +12,7 @@ import {
 import { NotFoundError, ConflictError, ValidationError } from '../utils/errors.ts'
 import { getOpenSession } from './cash-register.service.ts'
 import type { DbClient } from '../db/connection.ts'
-import type { CreateSaleInput, SaleSearchInput } from '@dorothea/validators/sale'
+import type { CreateSaleInput, SaleSearchInput, ReturnSaleItemsInput } from '@dorothea/validators/sale'
 
 interface PricedItem {
   productId: string
@@ -225,4 +225,73 @@ export async function cancelSale(db: DbClient, id: string, userId: number) {
   const [updated] = await db.update(sales).set({ status: 'CANCELLED' }).where(eq(sales.id, id)).returning()
 
   return updated
+}
+
+export async function returnSaleItems(db: DbClient, saleId: string, input: ReturnSaleItemsInput, userId: number) {
+  const { sale } = await getSaleById(db, saleId)
+  if (sale.status === 'CANCELLED') throw new ConflictError('No se pueden devolver ítems de una venta cancelada')
+
+  const openSession = await getOpenSession(db)
+  if (!openSession) throw new ConflictError('No hay una caja abierta. Abrí una caja antes de registrar devoluciones.')
+
+  const refundedItems: Array<{ saleItemId: string; quantity: number; refundCents: number }> = []
+  let totalRefundCents = 0
+
+  for (const inputItem of input.items) {
+    const [saleItem] = await db
+      .select()
+      .from(saleItems)
+      .where(eq(saleItems.id, inputItem.saleItemId))
+      .limit(1)
+
+    if (!saleItem || saleItem.saleId !== saleId) {
+      throw new NotFoundError(`Ítem de venta no encontrado: ${inputItem.saleItemId}`)
+    }
+
+    if (inputItem.quantity > saleItem.quantity) {
+      throw new ValidationError(
+        `No se puede devolver más unidades de las compradas para "${saleItem.productName}" (comprado: ${saleItem.quantity})`,
+      )
+    }
+
+    // Reponer stock
+    const [stockRow] = await db.select().from(inventory).where(eq(inventory.productId, saleItem.productId)).limit(1)
+    if (stockRow) {
+      await db
+        .update(inventory)
+        .set({ quantity: stockRow.quantity + inputItem.quantity, updatedAt: new Date().toISOString() })
+        .where(eq(inventory.productId, saleItem.productId))
+    }
+
+    // Registrar movimiento de inventario
+    await db.insert(inventoryMovements).values({
+      productId: saleItem.productId,
+      quantityChange: inputItem.quantity,
+      type: 'RETURN',
+      referenceId: saleId,
+      referenceType: 'SALE',
+      notes: `Devolución parcial venta ${saleId}`,
+      userId,
+    })
+
+    // Calcular reembolso proporcional: subtotalCents * (quantity / saleItem.quantity)
+    const refundCents = Math.round(saleItem.subtotalCents * (inputItem.quantity / saleItem.quantity))
+    totalRefundCents += refundCents
+
+    refundedItems.push({ saleItemId: inputItem.saleItemId, quantity: inputItem.quantity, refundCents })
+  }
+
+  // Registrar egreso de caja en la sesión actualmente abierta
+  await db.insert(cashMovements).values({
+    sessionId: openSession.id,
+    type: 'EXPENSE',
+    amountCents: totalRefundCents,
+    paymentMethod: sale.paymentMethod,
+    description: `Devolución parcial venta ${saleId}`,
+    referenceId: saleId,
+    referenceType: 'SALE',
+    userId,
+  })
+
+  return { refundedItems, totalRefundCents }
 }
